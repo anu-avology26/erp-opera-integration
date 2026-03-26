@@ -2,6 +2,7 @@
 
 namespace App\Services\Erp;
 
+use App\Services\Erp\ErpConfig;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -17,9 +18,9 @@ class BusinessCentralApiClient
 
     public static function fromConfig(): self
     {
-        $baseUrl = rtrim(config('erp.base_url', ''), '/');
-        $customerPath = config('erp.customer_path', 'customers');
-        $companyId = config('erp.company_id') ?: null;
+        $baseUrl = rtrim((string) ErpConfig::getString('base_url', (string) config('erp.base_url', '')), '/');
+        $customerPath = (string) ErpConfig::getString('customer_path', (string) config('erp.customer_path', 'customers'));
+        $companyId = ErpConfig::getString('company_id', (string) config('erp.company_id', '')) ?: null;
 
         return new self(
             baseUrl: $baseUrl,

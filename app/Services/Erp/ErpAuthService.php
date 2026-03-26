@@ -2,6 +2,7 @@
 
 namespace App\Services\Erp;
 
+use App\Services\Erp\ErpConfig;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -21,12 +22,12 @@ class ErpAuthService
     public static function fromConfig(): self
     {
         return new self(
-            tenantId: config('erp.tenant_id', ''),
-            tokenUrl: config('erp.token_url', ''),
-            clientId: config('erp.client_id', ''),
-            clientSecret: config('erp.client_secret', ''),
-            scope: config('erp.scope', 'https://api.businesscentral.dynamics.com/.default'),
-            tokenCacheTtl: config('erp.token_cache_ttl', 3300)
+            tenantId: (string) ErpConfig::getString('tenant_id', (string) config('erp.tenant_id', '')),
+            tokenUrl: (string) ErpConfig::getString('token_url', (string) config('erp.token_url', '')),
+            clientId: (string) ErpConfig::getString('client_id', (string) config('erp.client_id', '')),
+            clientSecret: (string) ErpConfig::getString('client_secret', (string) config('erp.client_secret', '')),
+            scope: (string) ErpConfig::getString('scope', (string) config('erp.scope', 'https://api.businesscentral.dynamics.com/.default')),
+            tokenCacheTtl: ErpConfig::getInt('token_cache_ttl', (int) config('erp.token_cache_ttl', 3300))
         );
     }
 
